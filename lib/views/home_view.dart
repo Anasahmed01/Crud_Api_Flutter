@@ -51,7 +51,7 @@ class _HomeViewState extends State<HomeView> {
                                   deleteUser(id: snapshot.data.data[index].id);
                                 });
                               },
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                             ),
                           );
                         });
