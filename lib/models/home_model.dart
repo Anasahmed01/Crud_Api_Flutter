@@ -9,13 +9,13 @@ class HomeModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(new Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -29,7 +29,7 @@ class Data {
   String? name;
   String? email;
   String? username;
-  int? phone;
+  String? phone;
   String? website;
   Company? company;
   Address? address;
@@ -52,13 +52,13 @@ class Data {
     phone = json['phone'];
     website = json['website'];
     company =
-        json['company'] != null ? Company.fromJson(json['company']) : null;
+        json['company'] != null ? new Company.fromJson(json['company']) : null;
     address =
-        json['address'] != null ? Address.fromJson(json['address']) : null;
+        json['address'] != null ? new Address.fromJson(json['address']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
     data['email'] = this.email;
@@ -128,8 +128,8 @@ class Address {
 }
 
 class Geo {
-  String? lat;
-  String? lng;
+  double? lat;
+  double? lng;
 
   Geo({this.lat, this.lng});
 

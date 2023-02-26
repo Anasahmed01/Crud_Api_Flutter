@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 textfield({required hintText, required controllar}) {
   return TextField(
     decoration: InputDecoration(
-        hintText: 'Enter Name',
+        hintText: hintText,
         hintStyle: const TextStyle(
           color: Color.fromARGB(255, 0, 0, 0),
         ),
