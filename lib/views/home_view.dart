@@ -1,5 +1,6 @@
+import 'package:crudapi/models/home_model.dart';
 import 'package:crudapi/services/service.dart';
-import 'package:crudapi/views/add_and_edit_view.dart';
+import 'package:crudapi/views/add_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -10,31 +11,22 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  // TextEditingController nameControllar = TextEditingController();
-  // TextEditingController userNameControllar = TextEditingController();
-  // TextEditingController emailControllar = TextEditingController();
-
-  // clear() {
-  //   setState(() {
-  //     nameControllar.text;
-  //     userNameControllar.text;
-  //     emailControllar.text;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.black,
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const EditView()),
+            MaterialPageRoute(builder: (context) => const AddView()),
           );
+          setState(() {});
         },
-        child: const Icon(Icons.add),
+        child: const Text("data"),
+      ),
+      appBar: AppBar(
+        title: const Text('Crud Oprations'),
+        backgroundColor: const Color.fromARGB(255, 42, 39, 39),
       ),
       body: FutureBuilder(
           future: getUser(),
@@ -45,26 +37,86 @@ class _HomeViewState extends State<HomeView> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(snapshot.data.data[index].name),
-                      subtitle: Wrap(
-                        direction: Axis.vertical,
-                        crossAxisAlignment: WrapCrossAlignment.start,
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(snapshot.data.data[index].username),
                           Text(snapshot.data.data[index].email),
                         ],
                       ),
-                      trailing: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            deleteUser(id: snapshot.data.data[index].id);
-                          });
-                        },
-                        icon: const Icon(Icons.delete),
+                      trailing: Wrap(
+                        children: [
+                          IconButton(
+                              onPressed: () async {
+                                await deleteUser(
+                                    id: snapshot.data.data[index].id);
+                                setState(() {});
+                              },
+                              icon: const Icon(Icons.delete)),
+                          IconButton(
+                              onPressed: () async {
+                                TextEditingController namesController =
+                                    TextEditingController();
+                                TextEditingController usernamesController =
+                                    TextEditingController();
+                                TextEditingController emailsController =
+                                    TextEditingController();
+                                TextEditingController phonesController =
+                                    TextEditingController();
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Column(
+                                          children: [
+                                            TextField(
+                                              controller: namesController,
+                                              decoration: const InputDecoration(
+                                                  hintText: 'name'),
+                                            ),
+                                            TextField(
+                                              controller: usernamesController,
+                                              decoration: const InputDecoration(
+                                                  hintText: 'username'),
+                                            ),
+                                            TextField(
+                                              controller: emailsController,
+                                              decoration: const InputDecoration(
+                                                  hintText: 'email'),
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            ElevatedButton(
+                                                onPressed: () async {
+                                                  await updateUser(
+                                                      model: Data(
+                                                          name: namesController
+                                                              .text,
+                                                          username:
+                                                              usernamesController
+                                                                  .text,
+                                                          email:
+                                                              emailsController
+                                                                  .text),
+                                                      id: snapshot
+                                                          .data.data[index].id);
+                                                  setState(() {});
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text("updatedata"))
+                                          ],
+                                        ),
+                                      );
+                                    });
+                              },
+                              icon: const Icon(Icons.edit)),
+                        ],
                       ),
                     );
                   });
             } else {
-              return const Center(child: CircularProgressIndicator());
+              return const CircularProgressIndicator();
             }
           }),
     );
