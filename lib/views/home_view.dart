@@ -80,7 +80,6 @@ class _HomeViewState extends State<HomeView> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          backgroundColor: Colors.grey,
                                           title: Column(
                                             children: [
                                               TextField(
@@ -105,25 +104,31 @@ class _HomeViewState extends State<HomeView> {
                                                 height: 20,
                                               ),
                                               ElevatedButton(
-                                                  onPressed: () async {
-                                                    await updateUser(
-                                                        model: Data(
-                                                            name:
-                                                                namesController
-                                                                    .text,
-                                                            username:
-                                                                usernamesController
-                                                                    .text,
-                                                            email:
-                                                                emailsController
-                                                                    .text),
-                                                        id: snapshot.data
-                                                            .data[index].id);
-                                                    setState(() {});
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child:
-                                                      const Text("updatedata"))
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                    const Color.fromARGB(
+                                                        255, 0, 0, 0),
+                                                  ),
+                                                ),
+                                                onPressed: () async {
+                                                  await updateUser(
+                                                      model: Data(
+                                                          name: namesController
+                                                              .text,
+                                                          username:
+                                                              usernamesController
+                                                                  .text,
+                                                          email:
+                                                              emailsController
+                                                                  .text),
+                                                      id: snapshot
+                                                          .data.data[index].id);
+                                                  setState(() {});
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text("updatedata"),
+                                              ),
                                             ],
                                           ),
                                         );
